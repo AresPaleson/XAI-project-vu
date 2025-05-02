@@ -9,7 +9,7 @@ import io
 
 # Constants
 img_size = 224
-batch_size = 32
+batch_size = 16
 num_classes = 4
 epochs = 20
 
