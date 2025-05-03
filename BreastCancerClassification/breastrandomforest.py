@@ -147,3 +147,35 @@ if hasattr(best_model['classifier'], 'feature_importances_'):
             print(f"{feature_names[idx]}: {importances[idx]:.4f}")
         else:
             print(f"Feature {idx}: {importances[idx]:.4f}")
+
+# In your current script, add these lines to save everything needed for explanations
+import joblib
+import pickle
+
+# Save the trained model and related objects
+# 1. Save the full pipeline (includes preprocessor and model)
+joblib.dump(best_model, 'breast_cancer_pipeline.joblib')
+
+# 2. Save the preprocessor separately (useful for LIME/SHAP)
+preprocessor_fitted = best_model.named_steps['preprocessor']
+joblib.dump(preprocessor_fitted, 'breast_cancer_preprocessor.joblib')
+
+# 3. Save the classifier separately
+classifier = best_model.named_steps['classifier']
+joblib.dump(classifier, 'breast_cancer_classifier.joblib')
+
+# 4. Save the label encoder for interpreting class names
+with open('breast_cancer_label_encoder.pkl', 'wb') as f:
+    pickle.dump(label_encoder, f)
+
+# 5. Save sample data for reference
+with open('breast_cancer_sample_data.pkl', 'wb') as f:
+    pickle.dump({
+        'X_train': X_train_processed[:5],  # Just save a few samples
+        'X_test': X_test_processed[:5],
+        'column_names': X_train.columns.tolist(),
+        'categorical_cols': categorical_cols,
+        'numeric_cols': numeric_cols + range_columns
+    }, f)
+
+print("All model components saved for XAI analysis")
