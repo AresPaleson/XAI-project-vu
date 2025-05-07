@@ -6,12 +6,11 @@ from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.pipeline import Pipeline
+import joblib
+import pickle
 
 # Load data
 df = pd.read_csv('breast-cancer-data-cleaned.csv')
-
-# Check column names
-print("Original column names:", df.columns.tolist())
 
 # Process target variable
 y = df['class']
@@ -148,9 +147,6 @@ if hasattr(best_model['classifier'], 'feature_importances_'):
         else:
             print(f"Feature {idx}: {importances[idx]:.4f}")
 
-# In your current script, add these lines to save everything needed for explanations
-import joblib
-import pickle
 
 # Save the trained model and related objects
 # 1. Save the full pipeline (includes preprocessor and model)
